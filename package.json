@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "boom": "^7.2.0",
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.3",
     "morgan": "^1.9.0",
