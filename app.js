@@ -18,7 +18,7 @@ app.use(morgan("dev"));
 
 var crwaler = require("./routes/crawler");
 
-app.use(crwaler);
+app.use("/", crwaler);
 
 app.listen(PORT, function () {
     console.log(`server started at port ${PORT}`);
