@@ -1,13 +1,14 @@
 var express = require("express");
-var request = require("request");
-var cheerio = require("cheerio");
-var URL = require("url-parse");
 var morgan = require("morgan");
 var bodyParser = require("body-parser");
 
 var app = express();
 var PORT = process.env.PORT || 3000;
 
+
+app.set('views', __dirname + '/views');
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'ejs');
 
 //body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));

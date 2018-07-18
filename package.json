@@ -12,6 +12,7 @@
     "body-parser": "^1.18.3",
     "boom": "^7.2.0",
     "cheerio": "^1.0.0-rc.2",
+    "ejs": "^2.6.1",
     "express": "^4.16.3",
     "morgan": "^1.9.0",
     "nodemon": "^1.18.2",

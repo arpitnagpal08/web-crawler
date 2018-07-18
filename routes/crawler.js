@@ -1,12 +1,21 @@
-var express = require("express");
-var router = express.Router();
-var boom = require("boom")
+var express = require("express")
+var request = require("request");
+var cheerio = require("cheerio");
+var URL = require("url-parse");;
+var router = express.Router()
 
 
-router.get("/", function (req, res) {
+router.post("/", function(req, res){
     var START_URL = ["https://storybook-nodejs.herokuapp.com/"];
-    var SEARCH_WORD = "arpit";
+    var SEARCH_WORD = req.body.search;
     var MAX_PAGES_TO_VISIT = 10;
+
+    var result = [{
+        visitingPage: [],
+        maximumLimit: 0,
+        relativeLinks: [],
+        wordFound: "" 
+    }]
 
     var pagesVisited = {};
     var numPagesVisited = 0;
@@ -22,8 +31,11 @@ router.get("/", function (req, res) {
 
         function crawl() {
             if (numPagesVisited >= MAX_PAGES_TO_VISIT) {
-                return boom.entityTooLarge("Reached max limit of number of pages to visit.")
-                return;
+                console.log(pagesToVisit);
+                result[0].maximumLimit = pagesToVisit
+                return res.render("index.html", {
+                    data: result[0]
+                });
             }
             var nextPage = pagesToVisit.pop();
             if (nextPage in pagesVisited) {
@@ -41,9 +53,12 @@ router.get("/", function (req, res) {
             numPagesVisited++;
 
             // Make the request
-            return {"Visiting page ": url};
+            result[0].visitingPage.push(url)
+            console.log("Visiting page " + url);
+
             request(url, function (error, response, body) {
                 // Check status code (200 is HTTP OK)
+                console.log("Status code: " + response.statusCode);
                 if (response.statusCode !== 200) {
                     callback();
                     return;
@@ -52,10 +67,14 @@ router.get("/", function (req, res) {
                 var $ = cheerio.load(body);
                 var isWordFound = searchForWord($, SEARCH_WORD);
                 if (isWordFound) {
-                    return {
-                        statusCode: response.statusCode,
-                        data: `Word ${SEARCH_WORD} found at page ${url}`
-                    }
+                    
+                    result[0].wordFound += `Word '${SEARCH_WORD}' found at page '${url}'`
+
+                    res.render("index.html", {
+                        data: result[0]
+                    })
+
+                    console.log(`Word ${SEARCH_WORD} found at page '${url}'`);
                 } else {
                     collectInternalLinks($);
                     // In this short program, our callback is just calling crawl()
@@ -74,11 +93,19 @@ router.get("/", function (req, res) {
             console.log("Found " + relativeLinks.length + " relative links on page");
             relativeLinks.each(function () {
                 pagesToVisit.push(baseUrl + $(this).attr('href'));
+                result[0].relativeLinks.push(baseUrl + $(this).attr('href'))
             });
         }
 
     }
 
+    
+})
+
+router.get("/", function (req, res) {
+    res.render("index.html", {
+        data: null
+    })
 });
 
 

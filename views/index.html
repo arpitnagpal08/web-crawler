@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Web Crwaler</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+
+</head>
+
+<body>
+
+    <div class="container jumbotron">
+        <div class="row">
+            <form action="/" class="form col-md-12" method="post">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="search" placeholder="Enter keywords">
+                </div>
+                <button type="submit" class="btn btn-outline-success">Search</button>
+            </form>
+        </div>
+    </div>
+
+
+    <% if(data != null){ %>
+    
+        <div class="container">
+        
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="text-muted">Visting Page</h3>
+                    <% for(links in data.visitingPage){ %>
+                        <a href="<%= data.visitingPage[links] %>" class="btn btn-link"><%= data.visitingPage[links] %></a>
+                    <% } %>
+                    <hr>
+                </div>
+                <div class="col-md-12">
+                    <h3 class="text-muted">Maximum Page Limit</h3>
+                    <% if(data.maximumLimit !== 0){ %>
+                        <% for(links in data.maximumLimit){ %>
+                            <a href="<%= data.maximumLimit[links] %>" class="btn btn-link"><%= data.maximumLimit[links] %></a>
+                        <% } %>
+                    <% }else{ %>
+                        <p>0</p>
+                    <% } %>
+                    <hr>
+                </div>
+                <div class="col-md-12">
+                    <h3 class="text-muted">Relative Links</h3>
+                    <% for(links in data.relativeLinks){ %>
+                        <a href="<%= data.relativeLinks[links] %>" class="btn btn-link"><%= data.relativeLinks[links] %></a>
+                    <% } %>
+                    <hr>
+                </div>
+                <div class="col-md-12">
+                    <h3 class="text-muted">Word Found</h3>
+                    <a href="<%= data.wordFound %>"> <%= data.wordFound %> </a>
+                </div>
+            </div>
+        </div>
+
+    <% } %>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
