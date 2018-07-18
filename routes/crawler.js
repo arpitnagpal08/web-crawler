@@ -6,9 +6,9 @@ var router = express.Router()
 
 
 router.post("/", function(req, res){
-    var START_URL = ["https://storybook-nodejs.herokuapp.com/"];
+    var START_URL = [req.body.url];
     var SEARCH_WORD = req.body.search;
-    var MAX_PAGES_TO_VISIT = 10;
+    var MAX_PAGES_TO_VISIT = 1000;
 
     var result = [{
         visitingPage: [],
@@ -32,11 +32,12 @@ router.post("/", function(req, res){
         function crawl() {
             if (numPagesVisited >= MAX_PAGES_TO_VISIT) {
                 console.log(pagesToVisit);
-                result[0].maximumLimit = pagesToVisit
+                result[0].maximumLimit = (MAX_PAGES_TO_VISIT - numPagesVisited)
                 return res.render("index.html", {
                     data: result[0]
                 });
             }
+            result[0].maximumLimit = (MAX_PAGES_TO_VISIT - numPagesVisited)
             var nextPage = pagesToVisit.pop();
             if (nextPage in pagesVisited) {
                 // We've already visited this page, so repeat the crawl

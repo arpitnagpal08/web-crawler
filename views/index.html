@@ -17,6 +17,9 @@
         <div class="row">
             <form action="/" class="form col-md-12" method="post">
                 <div class="form-group">
+                    <input type="text" class="form-control" name="url" placeholder="Enter starting url">
+                </div>
+                <div class="form-group">
                     <input type="text" class="form-control" name="search" placeholder="Enter keywords">
                 </div>
                 <button type="submit" class="btn btn-outline-success">Search</button>
@@ -38,14 +41,8 @@
                     <hr>
                 </div>
                 <div class="col-md-12">
-                    <h3 class="text-muted">Maximum Page Limit</h3>
-                    <% if(data.maximumLimit !== 0){ %>
-                        <% for(links in data.maximumLimit){ %>
-                            <a href="<%= data.maximumLimit[links] %>" class="btn btn-link"><%= data.maximumLimit[links] %></a>
-                        <% } %>
-                    <% }else{ %>
-                        <p>0</p>
-                    <% } %>
+                    <h3 class="text-muted">Page Limit Left</h3>
+                        <%= data.maximumLimit %> out of 10000
                     <hr>
                 </div>
                 <div class="col-md-12">
